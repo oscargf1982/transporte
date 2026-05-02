@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="gl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transporte Escolar · CEIP Plurilingüe de Monforte de Lemos</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Source+Sans+3:wght@300;400;600&display=swap');
+
+  :root {
+    --azul-xunta: #1a4b8c;
+    --azul-claro: #2d6abf;
+    --azul-suave: #e8f0fb;
+    --verde-acento: #2e7d32;
+    --gris-texto: #2c2c2c;
+    --gris-suave: #f4f6f9;
+    --borde: #d0daea;
+    --branco: #ffffff;
+    --sombra: 0 2px 12px rgba(26,75,140,0.08);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Source Sans 3', sans-serif;
+    color: var(--gris-texto);
+    background: var(--branco);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* ── CABECEIRA ── */
+  .cab-transporte {
+    background: linear-gradient(135deg, var(--azul-xunta) 0%, var(--azul-claro) 100%);
+    color: white;
+    padding: 2.2rem 2rem 2rem;
+    border-radius: 6px 6px 0 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .cab-transporte::before {
+    content: '';
+    position: absolute;
+    right: -30px; top: -30px;
+    width: 180px; height: 180px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+  .cab-transporte::after {
+    content: '';
+    position: absolute;
+    right: 40px; top: 40px;
+    width: 100px; height: 100px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 50%;
+  }
+  .cab-transporte .icono-bus {
+    font-size: 2.4rem;
+    margin-bottom: 0.4rem;
+    display: block;
+  }
+  .cab-transporte h1 {
+    font-family: 'Lora', serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    margin-bottom: 0.3rem;
+  }
+  .cab-transporte p {
+    font-size: 0.92rem;
+    opacity: 0.88;
+    font-weight: 300;
+    max-width: 560px;
+  }
+
+  /* ── AVISO XERAL ── */
+  .aviso-xeral {
+    background: var(--azul-suave);
+    border-left: 4px solid var(--azul-claro);
+    padding: 1rem 1.4rem;
+    font-size: 0.9rem;
+    color: #1a3560;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+  }
+  .aviso-xeral .icono {
+    font-size: 1.1rem;
+    margin-top: 0.05rem;
+    flex-shrink: 0;
+  }
+
+  /* ── BADGES DE TIPO ── */
+  .badge {
+    display: inline-block;
+    padding: 0.18rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .badge-conselleria {
+    background: #e3f0ff;
+    color: var(--azul-xunta);
+    border: 1px solid #b0cdf5;
+  }
+  .badge-concello {
+    background: #e8f5e9;
+    color: var(--verde-acento);
+    border: 1px solid #a5d6a7;
+  }
+
+  /* ── GRELLA DE RUTAS ── */
+  .rutas-wrapper {
+    padding: 1.6rem 0 0.5rem;
+  }
+
+  .ruta-card {
+    background: var(--branco);
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    margin-bottom: 1.4rem;
+    box-shadow: var(--sombra);
+    overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .ruta-card:hover {
+    box-shadow: 0 4px 20px rgba(26,75,140,0.13);
+  }
+
+  .ruta-cabeceira {
+    background: var(--gris-suave);
+    border-bottom: 1px solid var(--borde);
+    padding: 0.9rem 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .ruta-cabeceira-left {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+  }
+  .ruta-numero {
+    background: var(--azul-xunta);
+    color: white;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .ruta-titulo {
+    font-family: 'Lora', serif;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--azul-xunta);
+  }
+  .ruta-codigo {
+    font-size: 0.75rem;
+    color: #6b7a99;
+    font-weight: 400;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  /* ── TÁBOA DE PARADAS ── */
+  .paradas-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.87rem;
+  }
+  .paradas-table thead tr {
+    background: var(--azul-xunta);
+    color: white;
+  }
+  .paradas-table thead th {
+    padding: 0.55rem 1rem;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .paradas-table thead th:not(:first-child) {
+    text-align: center;
+  }
+  .paradas-table tbody tr {
+    border-bottom: 1px solid var(--borde);
+    transition: background 0.15s;
+  }
+  .paradas-table tbody tr:nth-child(even) {
+    background: #fafbfd;
+  }
+  .paradas-table tbody tr:hover {
+    background: var(--azul-suave);
+  }
+  .paradas-table tbody tr.fila-colexio {
+    background: #fffbea;
+    border-bottom: none;
+    font-weight: 600;
+  }
+  .paradas-table tbody tr.fila-colexio:hover {
+    background: #fff8d6;
+  }
+  .paradas-table td {
+    padding: 0.55rem 1rem;
+    color: var(--gris-texto);
+  }
+  .paradas-table td:not(:first-child) {
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    color: #1a4b8c;
+    font-weight: 600;
+  }
+  .parada-nome {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .parada-punto {
+    width: 7px; height: 7px;
+    background: #b0cdf5;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .fila-colexio .parada-punto {
+    background: #f0a500;
+    width: 9px; height: 9px;
+  }
+
+  /* ── LENDA ── */
+  .lenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    padding: 1rem 1.4rem;
+    background: var(--gris-suave);
+    border-top: 1px solid var(--borde);
+    font-size: 0.8rem;
+    color: #5a6a8a;
+    margin-top: 0.5rem;
+  }
+  .lenda-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .lenda-punto {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── NOTA FINAL ── */
+  .nota-final {
+    background: #f4f6f9;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    padding: 1rem 1.3rem;
+    font-size: 0.83rem;
+    color: #4a5568;
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 0.6rem;
+    align-items: flex-start;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 600px) {
+    .cab-transporte h1 { font-size: 1.25rem; }
+    .paradas-table { font-size: 0.82rem; }
+    .paradas-table td, .paradas-table th { padding: 0.45rem 0.6rem; }
+    .ruta-cabeceira { flex-direction: column; align-items: flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ░░ SECCIÓN TRANSPORTE ░░ -->
+<div style="max-width:780px; margin:0 auto; padding:0 0 2rem;">
+
+  <!-- Cabeceira -->
+  <div class="cab-transporte">
+    <span class="icono-bus">🚌</span>
+    <h1>Transporte Escolar · Curso 2025–2026</h1>
+    <p>O CEIP Plurilingüe de Monforte de Lemos dispón de cinco liñas de transporte escolar totalmente gratuítas para o alumnado.</p>
+  </div>
+
+  <!-- Aviso xeral -->
+  <div class="aviso-xeral">
+    <span class="icono">ℹ️</span>
+    <span>
+      Catro rutas son xestionadas pola <strong>Consellería de Educación</strong> e dan servizo ao alumnado residente fóra do casco urbán.
+      A quinta ruta é de titularidade <strong>municipal</strong> (Concello de Monforte) e cobre o casco urbán.
+      Todas as liñas son de carácter <strong>gratuíto</strong>.
+    </span>
+  </div>
+
+  <div class="rutas-wrapper">
+
+    <!-- ── RUTA 1 ── -->
+    <div class="ruta-card">
+      <div class="ruta-cabeceira">
+        <div class="ruta-cabeceira-left">
+          <div class="ruta-numero">1</div>
+          <div>
+            <div class="ruta-titulo">Sindrán – Valle Inclán</div>
+            <div class="ruta-codigo">Código: XG648011</div>
+          </div>
+        </div>
+        <span class="badge badge-conselleria">Consellería de Educación</span>
+      </div>
+      <table class="paradas-table">
+        <thead>
+          <tr>
+            <th>Parada</th>
+            <th>🕐 Entrada</th>
+            <th>🕒 Saída</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Sindrán</span></td><td>8:14</td><td>15:20</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Bascós</span></td><td>8:16</td><td>15:15</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Castelo 1</span></td><td>8:21</td><td>15:10</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Manhatan</span></td><td>8:23</td><td>15:07</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Entre Vías Valle Inclán</span></td><td>8:30</td><td>15:05</td></tr>
+          <tr class="fila-colexio"><td><span class="parada-nome"><span class="parada-punto"></span>🏫 Colexio</span></td><td>8:44</td><td>15:00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── RUTA 2 ── -->
+    <div class="ruta-card">
+      <div class="ruta-cabeceira">
+        <div class="ruta-cabeceira-left">
+          <div class="ruta-numero">2</div>
+          <div>
+            <div class="ruta-titulo">Caneda – Calvo Sotelo</div>
+            <div class="ruta-codigo">Código: XG677001</div>
+          </div>
+        </div>
+        <span class="badge badge-conselleria">Consellería de Educación</span>
+      </div>
+      <table class="paradas-table">
+        <thead>
+          <tr>
+            <th>Parada</th>
+            <th>🕐 Entrada</th>
+            <th>🕒 Saída</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Caneda</span></td><td>8:20</td><td>15:40</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>S. Mariña Calvos</span></td><td>8:21</td><td>15:35</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>S. Mariña Barreiro</span></td><td>8:22</td><td>15:30</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>S. Mariña Mato</span></td><td>8:22</td><td>15:30</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>S. Mariña Hortos</span></td><td>8:23</td><td>15:28</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>S. Mariña Solveira</span></td><td>8:25</td><td>15:25</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Casas Baratas</span></td><td>8:30</td><td>15:20</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>B. Vicetto – Dársena</span></td><td>8:40</td><td>15:10</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Calvo Sotelo, 38</span></td><td>8:45</td><td>15:05</td></tr>
+          <tr class="fila-colexio"><td><span class="parada-nome"><span class="parada-punto"></span>🏫 Colexio</span></td><td>8:50</td><td>15:00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── RUTA 3 ── -->
+    <div class="ruta-card">
+      <div class="ruta-cabeceira">
+        <div class="ruta-cabeceira-left">
+          <div class="ruta-numero">3</div>
+          <div>
+            <div class="ruta-titulo">Rivasaltas – Morín</div>
+            <div class="ruta-codigo">Código: XG677002</div>
+          </div>
+        </div>
+        <span class="badge badge-conselleria">Consellería de Educación</span>
+      </div>
+      <table class="paradas-table">
+        <thead>
+          <tr>
+            <th>Parada</th>
+            <th>🕐 Entrada</th>
+            <th>🕒 Saída</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Rivasaltas</span></td><td>8:30</td><td>15:11</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Rivasaltas II / ITV</span></td><td>8:33</td><td>15:09</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Morín II</span></td><td>8:40</td><td>15:07</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Morín</span></td><td>8:35</td><td>15:05</td></tr>
+          <tr class="fila-colexio"><td><span class="parada-nome"><span class="parada-punto"></span>🏫 Colexio</span></td><td>8:50</td><td>15:00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── RUTA 4 ── -->
+    <div class="ruta-card">
+      <div class="ruta-cabeceira">
+        <div class="ruta-cabeceira-left">
+          <div class="ruta-numero">4</div>
+          <div>
+            <div class="ruta-titulo">Meda – Duquesa</div>
+            <div class="ruta-codigo">Código: XG648004</div>
+          </div>
+        </div>
+        <span class="badge badge-conselleria">Consellería de Educación</span>
+      </div>
+      <table class="paradas-table">
+        <thead>
+          <tr>
+            <th>Parada</th>
+            <th>🕐 Entrada</th>
+            <th>🕒 Saída</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Meda</span></td><td>8:05</td><td>15:26</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Campelo</span></td><td>8:10</td><td>15:23</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Marcelle</span></td><td>8:15</td><td>15:18</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Duquesa de Alba</span></td><td>8:40</td><td>15:07</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Reboredo, 21</span></td><td>8:35</td><td>15:06</td></tr>
+          <tr class="fila-colexio"><td><span class="parada-nome"><span class="parada-punto"></span>🏫 Colexio</span></td><td>8:50</td><td>15:00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── RUTA 5 ── -->
+    <div class="ruta-card">
+      <div class="ruta-cabeceira">
+        <div class="ruta-cabeceira-left">
+          <div class="ruta-numero" style="background: var(--verde-acento);">5</div>
+          <div>
+            <div class="ruta-titulo" style="color: var(--verde-acento);">Palacio Bus – Municipal</div>
+            <div class="ruta-codigo">Servizo de bus urbano do Concello de Monforte</div>
+          </div>
+        </div>
+        <span class="badge badge-concello">Concello de Monforte</span>
+      </div>
+      <table class="paradas-table">
+        <thead>
+          <tr style="background: var(--verde-acento);">
+            <th>Parada</th>
+            <th>🕐 Entrada</th>
+            <th>🕒 Saída</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Florida</span></td><td>8:15</td><td>15:25</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Chaos (parada bus urbano)</span></td><td>8:18</td><td>15:23</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>C. Emilio Ferreiro, nº 57</span></td><td>8:23</td><td>15:19</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Avda. Galicia – Policía</span></td><td>8:25</td><td>15:20</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Rúa Ourense – Chinos</span></td><td>8:30</td><td>15:13</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Rúa Ourense, 112</span></td><td>8:32</td><td>15:10</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Mercadona – Irmáns Dapena</span></td><td>8:35</td><td>15:06</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Fion – Rest. Barcelona</span></td><td>8:37</td><td>15:07</td></tr>
+          <tr><td><span class="parada-nome"><span class="parada-punto"></span>Mercadona – Arriba</span></td><td>8:43</td><td>15:03</td></tr>
+          <tr class="fila-colexio"><td><span class="parada-nome"><span class="parada-punto"></span>🏫 Colexio</span></td><td>8:50</td><td>15:00</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div><!-- /rutas-wrapper -->
+
+  <!-- Lenda -->
+  <div class="lenda">
+    <div class="lenda-item"><span class="lenda-punto" style="background:#b0cdf5;"></span> Parada intermedia</div>
+    <div class="lenda-item"><span class="lenda-punto" style="background:#f0a500;"></span> Destino final (colexio)</div>
+    <div class="lenda-item"><span class="lenda-punto" style="background:var(--azul-xunta);"></span> Ruta Consellería de Educación</div>
+    <div class="lenda-item"><span class="lenda-punto" style="background:var(--verde-acento);"></span> Ruta Municipal</div>
+  </div>
+
+  <!-- Nota final -->
+  <div class="nota-final">
+    <span style="font-size:1rem; flex-shrink:0;">📋</span>
+    <span>Os horarios de entrada e saída poden sufrir variacións menores ao longo do curso. Para calquera dúbida ou incidencia, poñerse en contacto coa secretaría do centro: <strong>982 828 310</strong> · <a href="mailto:ceip.monforte@edu.xunta.gal" style="color:var(--azul-claro);">ceip.monforte@edu.xunta.gal</a></span>
+  </div>
+
+</div>
+<!-- ░░ FIN SECCIÓN TRANSPORTE ░░ -->
+
+</body>
+</html>
